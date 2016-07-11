@@ -1,6 +1,6 @@
-# PieCharts
+# Histogram
 
-Displays and configures React/D3 pie charts
+Displays and configures React/D3 histograms
 
 #Instructions
 
@@ -15,13 +15,13 @@ cd documents/GitHub
 Download the files from GitHub. (you can copy the url from above the files)
 
 `
-git clone https://github.com/MichaelWingate/PieCharts.git
+git clone https://github.com/MichaelWingate/Histogram.git
 `
 
 Move into the created folder:
 
 `
-cd PieCharts
+cd Histogram
 `
 
 Install dependencies:
@@ -43,10 +43,10 @@ Then you can access the app from [http://localhost:3000](http://localhost:3000) 
 When you want to update your code with the changes I have pushed onto this repository, simply run this command:
 
 `
-git pull https://github.com/MichaelWingate/PieCharts.git
+git pull https://github.com/MichaelWingate/Histogram.git
 `
 
 #Configuring
 
-Open up app/app.js to make any changes not handled by the inputs. To use different data, change the url in the ajax request 
-to the new file name. To change colors, pick a new D3 color scheme and specify it in the color field.
+Open up app/app.js to make any changes not handled by the inputs. To use different data, change the url in the ajax request
+to the new file name.
