@@ -12,6 +12,7 @@ var HistogramApp = React.createClass({
       width: 800,
       ticks: 10,
       ids: [],
+      selected: [],
     }
   },
 
@@ -56,9 +57,27 @@ var HistogramApp = React.createClass({
   displaySelected: function(ids) {
     this.setState({ids: ids});
   },
+  rowClick: function(value) {
+    var newSelected = [];
+
+    var found = false;
+    this.state.selected.map(function(selection) {
+      if(selection.PID == value.PID) {
+        found = true;
+      }
+      else {
+        newSelected.push(selection);
+      }
+    })
+    if(found != true) {
+      newSelected.push(value);
+    }
+    this.setState({selected: newSelected});
+  },
 
   render: function(){
     var state = this.state;
+    var rowClick = this.rowClick;
     if(this.state.ids.length == 0) {
       var tableData = this.state.data;
     }
@@ -76,27 +95,33 @@ var HistogramApp = React.createClass({
     }
     return(
       <div>
-        <div className="chart">
+      <div style={{float: 'left'}} className="table">
+        <table>
+          <tbody>
+          <tr><th>PID</th><th>Age</th><th>Divorces</th></tr>
+            {tableData.map(function(value,i) {
+              var style = {};
+              state.selected.map(function(selection) {
+                if(value.PID == selection.PID) {
+                  style = {backgroundColor: 'red'};
+                }
+              })
+              return (<tr onClick={this.rowClick.bind(this,value)} style={style} key={i}><td>{value.PID}</td><td>{value.age}</td><td>{value.divorces}</td></tr>);
+            }.bind(this))}
+          </tbody>
+        </table>
+      </div>
+        <div style={{float: 'right'}}  className="chart">
           {this.state.data != [] ?<Histogram height={this.state.height} width={this.state.width} data={this.state.data} measurement={"age"} id={"PID"} ticks={this.state.ticks}
-            displaySelected={this.displaySelected}/> : null}
+            displaySelected={this.displaySelected} pointSelected={this.state.selected}/> : null}
         </div>
-        <div className="form">
+        <div style={{clear: 'right', float: 'right'}} className="form">
           <form onSubmit={this.onSubmit}>
             Height: <input type="text" ref="height" defaultValue={this.state.height} /><br/>
             Width: <input type="text" ref="width" defaultValue={this.state.width} /><br/>
             Ticks: <input type="text" ref="ticks" defaultValue={this.state.ticks} /> <br/>
             <input type="submit" value="Submit" />
           </form>
-        </div>
-        <div className="table">
-          <table>
-            <tbody>
-            <tr><th>PID</th><th>Age</th><th>Divorces</th></tr>
-              {tableData.map(function(value,i) {
-                return <tr key={i}><td>{value.PID}</td><td>{value.age}</td><td>{value.divorces}</td></tr>
-              })}
-            </tbody>
-          </table>
         </div>
       </div>
     )

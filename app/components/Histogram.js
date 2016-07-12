@@ -22,6 +22,7 @@ var Histogram = React.createClass({
   getDefaultProps: function() {
     return({
     ticks: 10,
+    pointSelected: [],
   })
   },
   render: function() {
@@ -37,7 +38,8 @@ var Histogram = React.createClass({
                  measurement: 15});
     }
     return(
-      <HistogramSeries data={data} width={props.width} height={props.height} padding={50} measurement={props.measurement} ticks={props.ticks} displaySelected={props.displaySelected}/>
+      <HistogramSeries data={data} width={props.width} height={props.height} padding={50} measurement={props.measurement} ticks={props.ticks}
+        displaySelected={props.displaySelected} selectedLine={props.pointSelected}/>
     );
   }
 });
@@ -49,13 +51,14 @@ var HistogramSeries = React.createClass({
         left: 0,
         right: 0,
       },
-      isSelecting: false,
+      areaSelecting: false,
     })
   },
   getDefaultProps: function(){
     return {
       title: "",
       color: "blue",
+      selectedLine: [],
     }
   },
   selectBins: function(left, right) {
@@ -64,7 +67,7 @@ var HistogramSeries = React.createClass({
         left: left,
         right: right,
       },
-      isSelecting: true,
+      areaSelecting: true,
     });
   },
   unSelectBins: function() {
@@ -73,7 +76,7 @@ var HistogramSeries = React.createClass({
         left: 0,
         right: 0,
       },
-      isSelecting: false,
+      areaSelecting: false,
     });
   },
   render: function() {
@@ -85,6 +88,15 @@ var HistogramSeries = React.createClass({
       .domain([Math.floor(d3.min(data, function(value) {return value.measurement;})/10)*10, Math.ceil(d3.max(data, function(value) {return value.measurement;})/10) * 10])
       .range([props.padding, props.width - props.padding]);
 
+    var lines = props.selectedLine.map(function(selection, i) {
+      var p1 = {x: xScale(selection[props.measurement]),
+                y: props.height-props.padding};
+      var p2 = {x: xScale(selection[props.measurement]),
+                y: props.padding};
+      return(<g key={i}><line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="black" />
+                <text textAnchor="middle" x={p1.x} y={p2.y}>{selection[props.measurement]}</text></g>)
+    })
+
     var leftSelect = xScale.invert(this.state.selection.left);
     var rightSelect = xScale.invert(this.state.selection.right);
 
@@ -95,7 +107,7 @@ var HistogramSeries = React.createClass({
       (data);
 
     var sortedBins = [];
-    var selecting = this.state.isSelecting;
+    var selecting = this.state.areaSelecting;
     var ids = [];
     // NOTE: value.height is the height that will be displayed, value.bin.length is the "true" height/count
     bins.map(function(value,i) {
@@ -145,6 +157,7 @@ var HistogramSeries = React.createClass({
       <Chart width={props.width} height={props.height} transform={yTransform} padding={props.padding} selectBins={this.selectBins} unSelect={this.unSelectBins} selectedIDs={ids} selectIDs={props.displaySelected}>
         <g transform={dataTransform}>{bars}</g>
         <Axis orient="bottom" scale={xScale} transform={xTransform} width={props.width} height={props.height} label={axisLabel} ticks={props.ticks}/>
+        {lines.length != 0 ? <g>{lines}</g> : null}
       </Chart>
     )
   }
