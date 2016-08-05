@@ -87,8 +87,8 @@ var HistogramSideSeries = React.createClass({
 
     var binnedData = [];
     var sortedBins = [];
-    var selecting = this.state.areaSelecting;
     var ids = [];
+    var selecting = this.state.selecting;
     // NOTE: value.height is the height that will be displayed, value.bin.length is the "true" height/count
     bins.map(function(group,j) {
       binnedData.push([]);
@@ -134,7 +134,7 @@ var HistogramSideSeries = React.createClass({
         var barWidth = (binWidth -2)/binnedData.length;
         return(
             <Bar height={props.height - yScale(value.height) - props.padding} value={value.bin.length} label={value.bin.length}
-              width={barWidth} xPos={binWidth*i +barWidth*j + 1} style={value.selected ? {opacity: '0.5',} : {opacity: '1.0',}}
+              width={barWidth} xPos={binWidth*i +barWidth*j + 1} style={value.selected ? {opacity: '1.0',} : {opacity: '0.75',}}
               availableHeight={props.height} index={i} key={j+" - "+i} totalWidth={props.width} cut={value.cut} color={props.colors(j)} />
             )
       });

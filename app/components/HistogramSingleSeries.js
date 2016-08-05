@@ -157,7 +157,7 @@ var HistogramSingleSeries = React.createClass({
 
     var axisLabel = props.measurement.charAt(0).toUpperCase() + props.measurement.slice(1);
     return(
-      <Chart width={props.width} height={props.height} transform={yTransform} padding={props.padding} selectBins={this.selectBins} unSelect={this.unSelectBins} selectedIDs={ids} selectIDs={props.displaySelected}>
+      <Chart width={props.width} height={props.height} selectBins={this.selectBins} unSelect={this.unSelectBins} selectedIDs={ids} selectIDs={props.displaySelected}>
         <g transform={dataTransform}>{allBars}</g>
         <Axis orient="bottom" scale={xScale} transform={xTransform} width={props.width} height={props.height} label={axisLabel} ticks={props.ticks}/>
         {lines.length != 0 ? <g>{lines}</g> : null}

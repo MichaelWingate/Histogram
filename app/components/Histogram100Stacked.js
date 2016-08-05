@@ -152,7 +152,7 @@ var Histogram100StackedSeries = React.createClass({
         previousBars.push(barHeight);
         return(
             <Bar height={barHeight} value={percentage} label={Math.round(percentage) + "%"}
-              width={barWidth} xPos={binWidth*j + 1} yOffset = {previousHeight} style={value.selected ? {opacity: '0.5',} : {opacity: '1.0',}}
+              width={barWidth} xPos={binWidth*j + 1} yOffset = {previousHeight} style={value.selected ? {opacity: '1.0',} : {opacity: '0.75',}}
               availableHeight={props.height} index={i} key={j+" - "+i} totalWidth={props.width} cut={value.cut} color={props.colors(i)} />
             )
       });

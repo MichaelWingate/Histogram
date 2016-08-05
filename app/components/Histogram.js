@@ -13,6 +13,7 @@ var Histogram = React.createClass({
     height: React.PropTypes.number.isRequired,
     data: React.PropTypes.array.isRequired,
     measurement: React.PropTypes.string.isRequired,
+    id: React.PropTypes.string.isRequired,
   },
   getDefaultProps: function() {
     return({
@@ -42,7 +43,7 @@ var Histogram = React.createClass({
 
     if(group == null) {
       var histogram = <HistogramSingleSeries data={data} width={props.width} height={props.height} padding={50} measurement={props.measurement} ticks={props.ticks}
-        displaySelected={props.displaySelected} selectedLine={props.pointSelected} group={group} id={props.id} curve={props.curve} />
+        displaySelected={props.displaySelected} selectedLine={props.pointSelected} group={group} id={props.id} curve={props.curve} />;
     }
     else {
       if(props.multiStyle == "side") {
